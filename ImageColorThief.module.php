@@ -13,13 +13,16 @@ class ImageColorThief extends WireData implements Module {
 		return array(
 			'title' => "Image Color Thief",
 			'summary' => 'Adds methods to extract dominant color palettes from an image or image edge.',
-			'version' => '1.0.0',
+			'version' => '1.0.1',
 			'author' => 'Jacob Gorny',
 			'href' => 'https://github.com/solonmedia/ImageColorThief',
 			'icon' => 'file-image-o',
 			'autoload' => true,
             'singular' => true,
-			'requires' => 'ProcessWire>=3.0.0, PHP>=7.2',
+			'requires' => array(
+                'ProcessWire>=3.0.16',
+                'PHP>=7.2',
+            ),
 		);
 	}
 
