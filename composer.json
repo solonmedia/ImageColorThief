@@ -1,0 +1,5 @@
+{
+    "require": {
+        "ksubileau/color-thief-php": "^2.0"
+    }
+}
