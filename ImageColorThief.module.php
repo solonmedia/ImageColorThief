@@ -13,7 +13,7 @@ class ImageColorThief extends WireData implements Module {
 		return array(
 			'title' => "Image Color Thief",
 			'summary' => 'Adds methods to extract dominant color palettes from an image or image edge.',
-			'version' => '1.0.1',
+			'version' => '1.0.2',
 			'author' => 'Jacob Gorny',
 			'href' => 'https://github.com/solonmedia/ImageColorThief',
 			'icon' => 'file-image-o',
@@ -55,8 +55,13 @@ class ImageColorThief extends WireData implements Module {
 
         $f_pageImage = $event->object;
         $page = $f_pageImage->page;
-        $u_Images = $page->getUnformatted($f_pageImage->field->name);
-        $pageImage = $u_Images->getFile($f_pageImage->basename);
+        $f_pageImageField = $event->object->field;
+
+        $old_of = $page->of();
+        $page->of(false);
+        $u_Image = $event->object->pagefiles;
+
+        $pageImage = $u_Image->getFile($f_pageImage->basename);
 
         $imgHeight = (int) $pageImage->height;
         $imgWidth = (int) $pageImage->width;
@@ -219,7 +224,10 @@ class ImageColorThief extends WireData implements Module {
                 'mainColor' => $mainColor,
                 'mcOptions' => $options,
             ]));
-            $pageImage->save();
+
+            $page->save();
+            $page->of($old_of);
+
             $event->return = $mainColor;
             return;
         } else {
@@ -235,6 +243,7 @@ class ImageColorThief extends WireData implements Module {
         $areaType = 'full';
         $areaPrecision = 1;
         $outputFormat = 'hex';
+        $area = [];
 
         $allowedExt = [
             'jpg',
@@ -245,8 +254,13 @@ class ImageColorThief extends WireData implements Module {
 
         $f_pageImage = $event->object;
         $page = $f_pageImage->page;
-        $u_Images = $page->getUnformatted($f_pageImage->field->name);
-        $pageImage = $u_Images->getFile($f_pageImage->basename);
+        $f_pageImageField = $event->object->field;
+
+        $old_of = $page->of();
+        $page->of(false);
+        $u_Image = $event->object->pagefiles;
+
+        $pageImage = $u_Image->getFile($f_pageImage->basename);
 
         $imgHeight = (int) $pageImage->height;
         $imgWidth = (int) $pageImage->width;
@@ -411,7 +425,10 @@ class ImageColorThief extends WireData implements Module {
                 'cpOptions' => $options,
             ])
             );
-            $pageImage->save();
+
+            $page->save();
+            $page->of($old_of);
+
             $event->return = $colorPalette;
             return;
         } else {
